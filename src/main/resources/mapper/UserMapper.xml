@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">-->
+
+<!--</beans>-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.serverimpl.mapper.UserMapper">
+
+    <resultMap id="UserResult" type="com.test.serverimpl.domain.User">
+        <id     column="user_id"    property="userId"/>
+        <result column="username"   property="username"/>
+        <result column="password"   property="password"/>
+        <result column="email"      property="email"/>
+        <result column="nickname"   property="nickname"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.test.serverimpl.domain.User">
+        INSERT INTO users (username, password, email, nickname)
+        VALUES (#{username}, #{password}, #{email}, #{nickname})
+    </insert>
+
+    <select id="findByUsername" resultMap="UserResult" parameterType="String">
+        SELECT * FROM users WHERE username = #{username}
+    </select>
+
+    <update id="update" parameterType="com.test.serverimpl.domain.User">
+        UPDATE users
+        SET password  = #{password},
+            email     = #{email},
+            nickname  = #{nickname},
+            updated_at= NOW()
+        WHERE user_id = #{userId}
+    </update>
+
+    <select id="findById"
+            resultMap="UserResult"
+            parameterType="long">
+        SELECT *
+        FROM users
+        WHERE user_id = #{userId}
+    </select>
+
+</mapper>
